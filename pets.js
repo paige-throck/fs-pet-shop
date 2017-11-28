@@ -23,17 +23,16 @@ if (cmd === 'read') {
     let pets = JSON.parse(data);
     let index = process.argv[3];
 
-    if (undefined) {
-      console.log(`Usage: ${node} ${file} read INDEX`)
+    if (index > pets.length || index < pets.length - pets.length +1 ) {
+      console.log(`Usage: ${node} ${file} ${cmd} INDEX`)
       process.exit(1);
 
-    } else if
-      (numberCheck(index)) {
-          console.log(pets[index])
-        }
-          else {
-        console.log(pets)
-      }
+    } else if (numberCheck(index)) {
+      console.log(pets[index])
+
+    } else {
+      console.log(pets)
+    }
 
   });
 
@@ -43,10 +42,10 @@ if (cmd === 'read') {
   let petKind = process.argv[4];
   let petName = process.argv[5];
 
-  if (petAge === undefined || petKind === undefined || petName === undefined){
+  if (petAge === undefined || petKind === undefined || petName === undefined) {
     console.error(`Usage: ${node} ${file} ${cmd} AGE KIND NAME`);
     process.exit(1);
-  } else{
+  } else {
     fs.readFile(petsPath, 'utf8', function(readErr, data) {
       if (readErr) {
         throw readErr;
@@ -68,11 +67,34 @@ if (cmd === 'read') {
         console.log(pet);
       });
     });
+
   }
+} else if (cmd === 'update') {
+  fs.readFile(petsPath, 'utf8', function(err, data) {
+      if (err) {
+        throw err;
+      }
+      let pets = JSON.parse(data);
+      let newIndex = process.argv[3];
+      let newAge = Number(process.argv[4]);
+      let newKind = process.argv[5];
+      let newName = process.argv[6];
 
+      if (newIndex > pets.length || !numberCheck(newIndex) || newAge === undefined || newKind === undefined || newName === undefined) {
+        console.error(`Usage: ${node} ${file} ${cmd} INDEX AGE KIND NAME`);
+      }
+      // else {
+      //   let newPet = {
+      //     age: newAge,
+      //     kind: newKind,
+      //     name: newName
+      //   };
+      //
+      // }
 
+    });
 } else {
-  console.error(`Usage: ${node} ${file} [read | create | update | destroy]`);
-  process.exit(1);
+    console.error(`Usage: ${node} ${file} [read | create | update | destroy]`);
+    process.exit(1);
 
-}
+  }
