@@ -108,7 +108,29 @@ if (cmd === 'read') {
     if (err) {
       throw err;
     }
+
+    let destroyPets = JSON.parse(data);
+    let deadIndex = process.argv[3];
+
+    if (deadIndex > destroyPets.length || deadIndex < destroyPets.length - destroyPets.length) {
+      console.error(`Usage: ${node} ${file} ${cmd} INDEX`);
+      process.exit(1);
+
+    } else  {
+      let destroyPet = (destroyPets.splice(deadIndex,1)[0])
+      console.log(destroyPet)
+
+    }
+    let petsJSON = JSON.stringify(destroyPets);
+    fs.writeFile(petsPath, petsJSON, function(writeErr) {
+      if (writeErr) {
+        throw writeErr;
+      }
+
+    });
   });
+
+
 
 } else {
   console.error(`Usage: ${node} ${file} [read | create | update | destroy]`);
