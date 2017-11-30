@@ -8,10 +8,14 @@ let express = require('express');
 let app = express();
 let port = process.env.PORT || 8000;
 
-let morgan = require('morgan');
+// let morgan = require('morgan');
+let bodyParser = require('body-parser');
 
 app.disable('x-powered-by');
-app.use(morgan('short'));
+// app.use(morgan('short'));
+app.use(bodyParser.json());
+
+
 
 app.get('/pets', function(req, res) {
   fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
@@ -27,7 +31,7 @@ app.get('/pets', function(req, res) {
 });
 
 app.get('/pets/:id', function(req, res) {
-  fs.readFile(petsPath, 'utf8', function(err, petsJSON){
+  fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
     if (err) {
       console.error(err.stack);
       return res.sendStatus(500);
@@ -41,15 +45,57 @@ app.get('/pets/:id', function(req, res) {
       return res.sendStatus(404);
     }
 
-    
     res.send(pets[id]);
   });
 });
 
-app.use(function(req, res) {
-  res.sendStatus(404);
+app.post('/pets', function(req, res) {
+  fs.readFile(petsPath, 'utf8', function(readErr, petsJSON) {
+
+    if (readErr) {
+      console.error(readErr.stack);
+      // return res.sendStatus(500);
+    }
+res.set('Content-type', 'application/json')
+    let pets = JSON.parse(petsJSON);
+    let petAge = req.body.age;
+    let petKind = req.body.kind;
+    let petName = req.body.name;
+
+    let pet = {
+      age: petAge,
+      kind: petKind,
+      name: petName
+    };
+
+
+    if ( Number.isNaN(petAge) || !petAge || !petKind || !petName) {
+      res.set('Content-type', 'text/plain')
+      res.sendStatus(400);
+
+    } else {
+      pets.push(pet);
+      res.set('Content-type', 'application/json');
+      res.send(pet);
+    }
+
+    let newPetsJSON = JSON.stringify(pets);
+
+    fs.writeFile(petsPath, newPetsJSON, function(err, petsJSON) {
+      if (err) {
+        console.error(err);
+        // return res.sendStatus(500);
+      }
+    });
+
+    res.end();
+  });
 });
 
+app.use(function(req, res) {
+  res.set('Content-type', 'text/plain');
+  res.sendStatus(404);
+});
 
 
 app.listen(port, function() {
