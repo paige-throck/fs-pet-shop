@@ -22,9 +22,7 @@ let server = http.createServer(function(req, res) {
       res.setHeader('Content-Type', 'application/json');
       res.end(petsJSON);
     });
-  }
-
-  else if (req.method === 'GET' && req.url === '/pets/0') {
+  } else if (req.method === 'GET' && req.url === '/pets/0') {
     fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
       if (err) {
         console.error(err.stack);
@@ -41,8 +39,7 @@ let server = http.createServer(function(req, res) {
       res.end(petJSON);
 
     });
-  }
-  else if (req.method === 'GET' && req.url === '/pets/1') {
+  } else if (req.method === 'GET' && req.url === '/pets/1') {
     fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
       if (err) {
         console.error(err.stack);
@@ -56,6 +53,17 @@ let server = http.createServer(function(req, res) {
 
       res.setHeader('Content-Type', 'application/json');
       res.end(petJSON);
+    });
+
+  } else if (req.method === 'GET' && req.url === '/pets/-1') {
+    fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
+      if (err) {
+        console.error(err.stack);
+        res.statusCode = 500;
+        res.setHeader('Content-Type', 'text/plain');
+        return res.end('Not Found');
+      }
+
     });
   } else {
     res.statusCode = 404;

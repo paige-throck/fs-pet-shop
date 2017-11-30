@@ -112,7 +112,7 @@ if (cmd === 'read') {
     let destroyPets = JSON.parse(data);
     let deadIndex = process.argv[3];
 
-    if (deadIndex > destroyPets.length || deadIndex < destroyPets.length - destroyPets.length) {
+    if (deadIndex > destroyPets.length || deadIndex < destroyPets.length - destroyPets.length || deadIndex === undefined) {
       console.error(`Usage: ${node} ${file} ${cmd} INDEX`);
       process.exit(1);
 
