@@ -8,7 +8,10 @@ let express = require('express');
 let app = express();
 let port = process.env.PORT || 8000;
 
+let morgan = require('morgan');
+
 app.disable('x-powered-by');
+app.use(morgan('short'));
 
 app.get('/pets', function(req, res) {
   fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
@@ -34,10 +37,11 @@ app.get('/pets/:id', function(req, res) {
     let pets = JSON.parse(petsJSON);
 
     if (id < 0 || id >= pets.length || Number.isNaN(id)) {
+      res.set('Content-Type', 'text/plain');
       return res.sendStatus(404);
     }
 
-    res.set('Content-Type', 'text/plain');
+    
     res.send(pets[id]);
   });
 });
@@ -45,6 +49,8 @@ app.get('/pets/:id', function(req, res) {
 app.use(function(req, res) {
   res.sendStatus(404);
 });
+
+
 
 app.listen(port, function() {
   console.log('Listening on port', port);
