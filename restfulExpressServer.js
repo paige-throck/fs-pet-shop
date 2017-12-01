@@ -99,8 +99,6 @@ app.patch('/pets/:id', function(req, res) {
     let id = Number.parseInt(req.params.id);
     let pets = JSON.parse(petsJSON);
 
-
-
     if (id < 0 || id >= pets.length || Number.isNaN(id)) {
       return res.sendStatus(400);
     }
@@ -115,7 +113,7 @@ app.patch('/pets/:id', function(req, res) {
       pet[petKeys[i]] = req.body[petKeys[i]];
       }
 
-     
+
 
     let newPetsJSON = JSON.stringify(pets);
 

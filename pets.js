@@ -15,6 +15,7 @@ function numberCheck(num) {
   return !isNaN(num)
 }
 
+///////////////////////////Read/////////////////////////////////////////////////
 if (cmd === 'read') {
   fs.readFile(petsPath, 'utf8', function(err, data) {
     if (err) {
@@ -35,6 +36,8 @@ if (cmd === 'read') {
     }
 
   });
+  ///////////////////////////Create/////////////////////////////////////////////
+
 
 } else if (cmd === 'create') {
 
@@ -69,6 +72,8 @@ if (cmd === 'read') {
     });
 
   }
+  ///////////////////////////Update/////////////////////////////////////////////
+
 } else if (cmd === 'update') {
   fs.readFile(petsPath, 'utf8', function(err, data) {
       if (err) {
@@ -102,6 +107,8 @@ if (cmd === 'read') {
 
       });
   });
+
+///////////////////////////Destroy//////////////////////////////////////////////
 
 } else if (cmd === 'destroy') {
   fs.readFile(petsPath, 'utf8', function(err, data) {
