@@ -8,11 +8,11 @@ let express = require('express');
 let app = express();
 let port = process.env.PORT || 8000;
 
-// let morgan = require('morgan');
+
 let bodyParser = require('body-parser');
 
 app.disable('x-powered-by');
-// app.use(morgan('short'));
+
 app.use(bodyParser.json());
 
 
@@ -54,7 +54,7 @@ app.post('/pets', function(req, res) {
 
     if (readErr) {
       console.error(readErr.stack);
-      // return res.sendStatus(500);
+      return res.sendStatus(500);
     }
 res.set('Content-type', 'application/json')
     let pets = JSON.parse(petsJSON);
@@ -74,6 +74,7 @@ res.set('Content-type', 'application/json')
       res.sendStatus(400);
 
     } else {
+
       pets.push(pet);
       res.set('Content-type', 'application/json');
       res.send(pet);
@@ -84,17 +85,20 @@ res.set('Content-type', 'application/json')
     fs.writeFile(petsPath, newPetsJSON, function(err, petsJSON) {
       if (err) {
         console.error(err);
-        // return res.sendStatus(500);
+        res.sendStatus(500);
       }
+      res.send(pets)
     });
 
     res.end();
+    console.log(pets);
   });
 });
 
 app.use(function(req, res) {
   res.set('Content-type', 'text/plain');
   res.sendStatus(404);
+  console.log('wtf');
 });
 
 
