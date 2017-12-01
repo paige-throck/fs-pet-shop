@@ -12,7 +12,6 @@ let port = process.env.PORT || 8000;
 let bodyParser = require('body-parser');
 
 app.disable('x-powered-by');
-
 app.use(bodyParser.json());
 
 
@@ -58,7 +57,7 @@ app.post('/pets', function(req, res) {
     }
 res.set('Content-type', 'application/json')
     let pets = JSON.parse(petsJSON);
-    let petAge = req.body.age;
+    let petAge = Number(req.body.age);
     let petKind = req.body.kind;
     let petName = req.body.name;
 
